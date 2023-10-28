@@ -1,0 +1,103 @@
+require("core.options")
+
+-- Install package manager
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable",
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+	-- Core plugins
+	"tpope/vim-fugitive",
+	"tpope/vim-rhubarb",
+	"terrortylor/nvim-comment",
+
+	-- Detect tabstop and shiftwidth automatically
+	-- "tpope/vim-sleuth",
+
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			{ "j-hui/fidget.nvim", tag = "legacy", opts = {} },
+			"folke/neodev.nvim",
+		},
+	},
+	{
+		"hrsh7th/nvim-cmp",
+		dependencies = {
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+			"hrsh7th/cmp-nvim-lsp",
+			"rafamadriz/friendly-snippets",
+		},
+	},
+	{ "folke/which-key.nvim", opts = {} },
+	{
+		"nvim-lualine/lualine.nvim",
+		opts = {
+			options = {
+				icons_enabled = false,
+				theme = "gruvbox",
+				component_separators = "|",
+				section_separators = "",
+			},
+		},
+	},
+	{
+		"nvim-telescope/telescope.nvim",
+		branch = "0.1.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
+				build = "make",
+				cond = function()
+					return vim.fn.executable("make") == 1
+				end,
+			},
+		},
+	},
+	{
+		"nvim-treesitter/nvim-treesitter",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+		},
+		build = ":TSUpdate",
+	},
+
+	require("kickstart.plugins.autoformat"),
+	-- require 'kickstart.plugins.debug',
+
+	-- Extra plugins
+	{ import = "custom.plugins" },
+})
+
+require("core.keymaps")
+require("core.autocommands")
+require("core.telescope")
+require("core.treesitter")
+require("core.lsp")
+require("core.cmp")
+
+-- document existing key chains
+require("which-key").register({
+	["<leader>c"] = { name = "Code", _ = "which_key_ignore" },
+	["<leader>d"] = { name = "Document", _ = "which_key_ignore" },
+	["<leader>g"] = { name = "Git", _ = "which_key_ignore" },
+	["<leader>r"] = { name = "Rename", _ = "which_key_ignore" },
+	["<leader>s"] = { name = "Search", _ = "which_key_ignore" },
+	["<leader>w"] = { name = "Workspace", _ = "which_key_ignore" },
+})
+
+-- The line beneath this is called `modeline`. See `:help modeline`
+-- vim: ts=2 sts=2 sw=2 et
