@@ -8,6 +8,12 @@ vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = tr
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
+-- Move in insert and command mode
+vim.keymap.set({ "i", "c" }, "<C-h>", "<Left>", { remap = true })
+vim.keymap.set({ "i", "c" }, "<C-j>", "<Down>", { remap = true })
+vim.keymap.set({ "i", "c" }, "<C-k>", "<Up>", { remap = true })
+vim.keymap.set({ "i", "c" }, "<C-l>", "<Right>", { remap = true })
+
 -- Resize window using <ctrl> arrow keys
 vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
 vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
@@ -28,7 +34,6 @@ vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 vim.keymap.set("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
 vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-vim.keymap.set("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 
 -- Clear search
 -- vim.keymap.set({ "i", "n" }, "<leader>h", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
@@ -37,7 +42,7 @@ vim.keymap.set("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffe
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
 -- Comment
-vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CommentToggle<cr>", { desc = "Comment line(s)" })
+-- vim.keymap.set({ "n", "v", "x" }, "<leader>cc", "<cmd>CommentToggle<cr>", { desc = "Comment line(s)" })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 vim.keymap.set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next search result" })

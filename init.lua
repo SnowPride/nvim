@@ -18,7 +18,12 @@ require("lazy").setup({
 	-- Core plugins
 	"tpope/vim-fugitive",
 	"tpope/vim-rhubarb",
-	"terrortylor/nvim-comment",
+	-- {
+	-- 	"terrortylor/nvim-comment",
+	-- 	config = function()
+	-- 		require("nvim_comment").setup()
+	-- 	end,
+	-- },
 
 	-- Detect tabstop and shiftwidth automatically
 	-- "tpope/vim-sleuth",
@@ -31,6 +36,30 @@ require("lazy").setup({
 			{ "j-hui/fidget.nvim", tag = "legacy", opts = {} },
 			"folke/neodev.nvim",
 		},
+		-- opts = {
+		-- 	diagnostics = {
+		-- 		underline = true,
+		-- 		update_in_insert = false,
+		-- 		virtual_text = {
+		-- 			spacing = 4,
+		-- 			source = "if_many",
+		-- 			prefix = "●",
+		-- 			-- prefix = "icons",
+		-- 		},
+		-- 		severity_sort = true,
+		-- 	},
+		-- 	-- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
+		-- 	inlay_hints = {
+		-- 		enabled = false,
+		-- 	},
+		-- 	-- add any global capabilities here
+		-- 	capabilities = {},
+		-- 	-- options for vim.lsp.buf.format
+		-- 	format = {
+		-- 		formatting_options = nil,
+		-- 		timeout_ms = nil,
+		-- 	},
+		-- },
 	},
 	{
 		"hrsh7th/nvim-cmp",
@@ -42,17 +71,6 @@ require("lazy").setup({
 		},
 	},
 	{ "folke/which-key.nvim", opts = {} },
-	{
-		"nvim-lualine/lualine.nvim",
-		opts = {
-			options = {
-				icons_enabled = false,
-				theme = "gruvbox",
-				component_separators = "|",
-				section_separators = "",
-			},
-		},
-	},
 	{
 		"nvim-telescope/telescope.nvim",
 		branch = "0.1.x",
@@ -71,6 +89,7 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
+			"JoosepAlviste/nvim-ts-context-commentstring",
 		},
 		build = ":TSUpdate",
 	},
@@ -80,6 +99,10 @@ require("lazy").setup({
 
 	-- Extra plugins
 	{ import = "custom.plugins" },
+}, {
+	ui = {
+		border = "rounded",
+	},
 })
 
 require("core.keymaps")
@@ -91,7 +114,8 @@ require("core.cmp")
 
 -- document existing key chains
 require("which-key").register({
-	["<leader>c"] = { name = "Code", _ = "which_key_ignore" },
+	["<leader>b"] = { name = "Buffer", _ = "which_key_ignore" },
+	["<leader>c"] = { name = "Code", _ = "which_key_ignore", mode = { "n", "v" } },
 	["<leader>d"] = { name = "Document", _ = "which_key_ignore" },
 	["<leader>g"] = { name = "Git", _ = "which_key_ignore" },
 	["<leader>r"] = { name = "Rename", _ = "which_key_ignore" },

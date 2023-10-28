@@ -35,6 +35,37 @@ local on_attach = function(_, bufnr)
 	nmap("<leader>cf", "<cmd>Format<cr>", "Format current buffer with LSP")
 end
 
+-- Sign icons
+for name, icon in pairs(require("core.icons").diagnostics) do
+	local sign_name = "DiagnosticSign" .. name
+	local hl_name = "Diagnostic" .. name
+	vim.fn.sign_define(sign_name, { text = icon, texthl = hl_name, numhl = "" })
+end
+
+-- local opts = require("lspconfig").opts
+-- local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
+--
+-- if opts.inlay_hints.enabled and inlay_hint then
+-- 	require("core.lsp").on_attach(function(client, buffer)
+-- 		if client.supports_method("textDocument/inlayHint") then
+-- 			inlay_hint(buffer, true)
+-- 		end
+-- 	end)
+-- end
+--
+-- if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
+-- 	opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
+-- 		or function(diagnostic)
+-- 			local icons = require("core.icons").diagnostics
+-- 			for d, icon in pairs(icons) do
+-- 				if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+-- 					return icon
+-- 				end
+-- 			end
+-- 		end
+-- end
+-- vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require("mason").setup()
