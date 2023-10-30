@@ -35,14 +35,8 @@ vim.keymap.set("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
 vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 
--- Clear search
--- vim.keymap.set({ "i", "n" }, "<leader>h", "<cmd>noh<cr><esc>", { desc = "Escape and clear hlsearch" })
-
 -- Keymaps for better default experience
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
-
--- Comment
--- vim.keymap.set({ "n", "v", "x" }, "<leader>cc", "<cmd>CommentToggle<cr>", { desc = "Comment line(s)" })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 vim.keymap.set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next search result" })
@@ -66,15 +60,11 @@ vim.keymap.set("v", ">", ">gv")
 
 -- lazy
 vim.keymap.set("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
+vim.keymap.set("n", "<leader>m", "<cmd>Mason<cr>", { desc = "Mason" })
 
 -- quickfix
 vim.keymap.set("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
 vim.keymap.set("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
-
--- formatting
--- vim.keymap.set({ "n", "v" }, "<leader>cf", function()
--- 	Util.format({ force = true })
--- end, { desc = "Format" })
 
 -- diagnostic
 local diagnostic_goto = function(next, severity)
