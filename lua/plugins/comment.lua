@@ -10,8 +10,8 @@ return {
         end,
       },
       mappings = {
-        comment_line = "<leader>cc",
-        comment_visual = "<leader>cc",
+        comment_line = "<leader>/",
+        comment_visual = "<leader>/",
       },
     },
   },

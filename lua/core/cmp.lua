@@ -1,5 +1,6 @@
 local cmp = require("cmp")
 local luasnip = require("luasnip")
+local bordered = require("cmp.config.window").bordered
 require("luasnip.loaders.from_vscode").lazy_load()
 luasnip.config.setup({})
 
@@ -55,5 +56,9 @@ cmp.setup({
   sources = {
     { name = "nvim_lsp" },
     { name = "luasnip" },
+  },
+  window = {
+    completion = bordered("rounded"),
+    documentation = bordered("rounded"),
   },
 })

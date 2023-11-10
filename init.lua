@@ -14,107 +14,118 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-  -- Core plugins
-  "tpope/vim-fugitive",
-  "tpope/vim-rhubarb",
-  -- {
-  -- 	"terrortylor/nvim-comment",
-  -- 	config = function()
-  -- 		require("nvim_comment").setup()
-  -- 	end,
-  -- },
-
-  -- Detect tabstop and shiftwidth automatically
-  -- "tpope/vim-sleuth",
-
+require("lazy").setup(
   {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-      { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
-      "folke/neodev.nvim",
-    },
-    -- opts = {
-    -- 	diagnostics = {
-    -- 		underline = true,
-    -- 		update_in_insert = false,
-    -- 		virtual_text = {
-    -- 			spacing = 4,
-    -- 			source = "if_many",
-    -- 			prefix = "●",
-    -- 			-- prefix = "icons",
-    -- 		},
-    -- 		severity_sort = true,
-    -- 	},
-    -- 	-- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
-    -- 	inlay_hints = {
-    -- 		enabled = false,
-    -- 	},
-    -- 	-- add any global capabilities here
-    -- 	capabilities = {},
-    -- 	-- options for vim.lsp.buf.format
-    -- 	format = {
-    -- 		formatting_options = nil,
-    -- 		timeout_ms = nil,
-    -- 	},
+    -- Core plugins
+    "tpope/vim-fugitive",
+    "tpope/vim-rhubarb",
+    -- {
+    -- 	"terrortylor/nvim-comment",
+    -- 	config = function()
+    -- 		require("nvim_comment").setup()
+    -- 	end,
     -- },
-  },
-  {
-    "jay-babu/mason-null-ls.nvim",
-    dependencies = {
-      "williamboman/mason.nvim",
-      "nvimtools/none-ls.nvim",
+
+    -- Detect tabstop and shiftwidth automatically
+    -- "tpope/vim-sleuth",
+
+    {
+      "neovim/nvim-lspconfig",
+      dependencies = {
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+        { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
+        "folke/neodev.nvim",
+      },
+      opts = function(_, opts)
+        require("lspconfig.ui.windows").default_options.border = "rounded"
+        return opts
+      end,
+      -- opts = {
+      -- 	diagnostics = {
+      -- 		underline = true,
+      -- 		update_in_insert = false,
+      -- 		virtual_text = {
+      -- 			spacing = 4,
+      -- 			source = "if_many",
+      -- 			prefix = "●",
+      -- 			-- prefix = "icons",
+      -- 		},
+      -- 		severity_sort = true,
+      -- 	},
+      -- 	-- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
+      -- 	inlay_hints = {
+      -- 		enabled = false,
+      -- 	},
+      -- 	-- add any global capabilities here
+      -- 	capabilities = {},
+      -- 	-- options for vim.lsp.buf.format
+      -- 	format = {
+      -- 		formatting_options = nil,
+      -- 		timeout_ms = nil,
+      -- 	},
+      -- },
     },
-  },
-  {
-    "stevearc/conform.nvim",
-    opts = {},
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
-      "hrsh7th/cmp-nvim-lsp",
-      "rafamadriz/friendly-snippets",
-    },
-  },
-  { "folke/which-key.nvim", opts = {} },
-  {
-    "nvim-telescope/telescope.nvim",
-    branch = "0.1.x",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
-        cond = function()
-          return vim.fn.executable("make") == 1
-        end,
+    {
+      "jay-babu/mason-null-ls.nvim",
+      dependencies = {
+        "williamboman/mason.nvim",
+        "nvimtools/none-ls.nvim",
       },
     },
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      "JoosepAlviste/nvim-ts-context-commentstring",
+    {
+      "stevearc/conform.nvim",
+      opts = {},
     },
-    build = ":TSUpdate",
-  },
+    {
+      "hrsh7th/nvim-cmp",
+      dependencies = {
+        "L3MON4D3/LuaSnip",
+        "saadparwaiz1/cmp_luasnip",
+        "hrsh7th/cmp-nvim-lsp",
+        "rafamadriz/friendly-snippets",
+      },
+    },
+    {
+      "folke/which-key.nvim",
+      opts = { window = { border = "rounded" } },
+    },
+    {
+      "nvim-telescope/telescope.nvim",
+      branch = "0.1.x",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        {
+          "nvim-telescope/telescope-fzf-native.nvim",
+          build = "make",
+          cond = function()
+            return vim.fn.executable("make") == 1
+          end,
+        },
+      },
+    },
+    {
+      "nvim-treesitter/nvim-treesitter",
+      dependencies = {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        "JoosepAlviste/nvim-ts-context-commentstring",
+      },
+      build = ":TSUpdate",
+    },
 
-  require("kickstart.plugins.autoformat"),
-  -- require 'kickstart.plugins.debug',
+    require("kickstart.plugins.autoformat"),
+    -- require 'kickstart.plugins.debug',
 
-  -- Extra plugins
-  { import = "plugins" },
-}, {
-  ui = {
-    border = "rounded",
+    -- Extra plugins
+    { import = "plugins" },
   },
-})
+  -- lazy.nvim options
+  {
+    ui = {
+      border = "rounded",
+    },
+  }
+)
 
 require("core.keymaps")
 require("core.autocommands")

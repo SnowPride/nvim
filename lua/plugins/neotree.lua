@@ -12,7 +12,7 @@ return {
   },
   keys = {
     {
-      "<leader>f",
+      "<leader>e",
       "<cmd>Neotree toggle<cr>",
       desc = "Toggle file explorer",
     },
