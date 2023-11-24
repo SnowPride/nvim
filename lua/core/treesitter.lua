@@ -7,6 +7,7 @@ vim.defer_fn(function()
       "c",
       "cpp",
       "go",
+      "html",
       "javascript",
       "latex",
       "lua",

@@ -73,7 +73,7 @@ local servers = {
   clangd = {},
   -- golsp = {},
   pyright = {},
-  rust_analyzer = {},
+  -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
@@ -108,6 +108,23 @@ mason_lspconfig.setup_handlers({
       filetypes = (servers[server_name] or {}).filetypes,
     })
   end,
+})
+
+-- Setup rust-tools
+local rt = require("rust-tools")
+
+rt.setup({
+  server = {
+    on_attach = on_attach,
+    settings = {
+      ["rust-analyzer"] = {
+        check = {
+          command = "clippy",
+          extraArgs = { "--all", "--", "-W", "clippy::all" },
+        },
+      },
+    },
+  },
 })
 
 --- Given the linter and formatter list, extract a list of all tools that need to be installed

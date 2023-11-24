@@ -19,6 +19,8 @@ require("lazy").setup(
     -- Core plugins
     "tpope/vim-fugitive",
     "tpope/vim-rhubarb",
+    "simrat39/rust-tools.nvim",
+
     -- {
     -- 	"terrortylor/nvim-comment",
     -- 	config = function()
