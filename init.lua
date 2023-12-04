@@ -119,7 +119,7 @@ require("lazy").setup(
     -- require 'kickstart.plugins.debug',
 
     -- Extra plugins
-    { import = "plugins" },
+    { import = "custom.plugins" },
   },
   -- lazy.nvim options
   {
@@ -136,13 +136,15 @@ require("core.treesitter")
 require("core.lsp")
 require("core.cmp")
 
+-- Separate custom plugin keymap
+require("custom.keymaps")
+
 -- document existing key chains
 require("which-key").register({
   ["<leader>b"] = { name = "Buffer", _ = "which_key_ignore" },
   ["<leader>c"] = { name = "Code", _ = "which_key_ignore", mode = { "n", "v" } },
   ["<leader>d"] = { name = "Document", _ = "which_key_ignore" },
   ["<leader>g"] = { name = "Git", _ = "which_key_ignore" },
-  ["<leader>r"] = { name = "Rename", _ = "which_key_ignore" },
   ["<leader>s"] = { name = "Search", _ = "which_key_ignore" },
   ["<leader>w"] = { name = "Workspace", _ = "which_key_ignore" },
 })
