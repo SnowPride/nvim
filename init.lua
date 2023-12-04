@@ -115,8 +115,8 @@ require("lazy").setup(
       build = ":TSUpdate",
     },
 
-    require("kickstart.plugins.autoformat"),
-    -- require 'kickstart.plugins.debug',
+    -- Sets up nvim-lspconfig
+    require("core.autoformat"),
 
     -- Extra plugins
     { import = "custom.plugins" },
