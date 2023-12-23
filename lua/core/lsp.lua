@@ -4,7 +4,7 @@ local on_attach = function(_, bufnr)
     vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
   end
 
-  nmap("<leader>cn", vim.lsp.buf.rename, "Rename")
+  nmap("<leader>cr", vim.lsp.buf.rename, "Rename")
   nmap("<leader>ca", vim.lsp.buf.code_action, "Code Action")
   nmap("gd", require("telescope.builtin").lsp_definitions, "Goto definition")
   nmap("gr", require("telescope.builtin").lsp_references, "Goto references")
@@ -165,8 +165,8 @@ local formatters = {
 }
 
 local linters = {}
-local dont_install = {}
 local debuggers = {}
+local dont_install = {}
 -- {
 -- not real formatters, but pseudo-formatters from conform.nvim
 -- "trim_whitespace",
