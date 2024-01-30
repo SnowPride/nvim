@@ -1,6 +1,9 @@
 return {
   {
     "echasnovski/mini.comment",
+    dependencies = {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+    },
     event = "VeryLazy",
     opts = {
       options = {
@@ -12,6 +15,15 @@ return {
       mappings = {
         comment_line = "<leader>/",
         comment_visual = "<leader>/",
+      },
+    },
+  },
+  {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    opts = {
+      config = {
+        cpp = "// %s",
+        h = "// %s",
       },
     },
   },
