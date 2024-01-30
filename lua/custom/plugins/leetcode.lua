@@ -8,7 +8,7 @@ return {
     -- "3rd/image.nvim",
   },
   opts = {
-    lang = "rust",
-    -- image_support = true,
+    lang = "cpp",
+    image_support = false,
   },
 }
