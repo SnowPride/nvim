@@ -1,5 +1,10 @@
 return {
-  { "vladdoster/remember.nvim" },
+  {
+    "vladdoster/remember.nvim",
+    config = function()
+      require("remember")
+    end,
+  },
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
