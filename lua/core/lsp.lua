@@ -39,30 +39,6 @@ for name, icon in pairs(require("core.icons").diagnostics) do
   vim.fn.sign_define(sign_name, { text = icon, texthl = hl_name, numhl = "" })
 end
 
--- local opts = require("lspconfig").opts
--- local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
---
--- if opts.inlay_hints.enabled and inlay_hint then
--- 	require("core.lsp").on_attach(function(client, buffer)
--- 		if client.supports_method("textDocument/inlayHint") then
--- 			inlay_hint(buffer, true)
--- 		end
--- 	end)
--- end
---
--- if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
--- 	opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
--- 		or function(diagnostic)
--- 			local icons = require("core.icons").diagnostics
--- 			for d, icon in pairs(icons) do
--- 				if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
--- 					return icon
--- 				end
--- 			end
--- 		end
--- end
--- vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
-
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require("mason").setup({ ui = { border = "rounded" } })
@@ -94,19 +70,6 @@ local servers = {
       --[[ "--query-driver=/usr/bin/g++", ]]
     },
     filetypes = { "c", "cpp", "objc", "objcpp", "h" },
-    -- root_dir = function(fname)
-    --   return require("lspconfig.util").root_pattern(
-    --     ".clangd",
-    --     ".clang-tidy",
-    --     ".clang-format",
-    --     "compile_commands.json",
-    --     "compile_flags.txt",
-    --     "build.sh", -- buildProject
-    --     "configure.ac", -- AutoTools
-    --     "run",
-    --     "compile"
-    --   )(fname) or require("lspconfig.util").find_git_ancestor(fname)
-    -- end,
     single_file_support = true,
     init_options = {
       compilationDatabasePath = vim.fn.getcwd() .. "/build",
@@ -118,7 +81,7 @@ local servers = {
   },
   -- golsp = {},
   pyright = {},
-  -- rust_analyzer = {},
+  rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
@@ -146,6 +109,9 @@ mason_lspconfig.setup({
 
 mason_lspconfig.setup_handlers({
   function(server_name)
+    if server_name == "rust_analyzer" then
+      return
+    end
     require("lspconfig")[server_name].setup({
       capabilities = capabilities,
       on_attach = on_attach,
@@ -155,24 +121,15 @@ mason_lspconfig.setup_handlers({
   end,
 })
 
--- Setup rust-tools
-local rt = require("rust-tools")
-
-rt.setup({
+-- rust_analyzer
+require("rustaceanvim")
+vim.g.rustaceanvim = {
   server = {
     on_attach = on_attach,
-    settings = {
-      ["rust-analyzer"] = {
-        check = {
-          command = "clippy",
-          extraArgs = { "--all", "--", "-W", "clippy::all" },
-        },
-      },
-    },
   },
-})
+}
 
---- Given the linter and formatter list, extract a list of all tools that need to be installed
+-- Given the linter and formatter list, extract a list of all tools that need to be installed
 local function mason_autoinstall(linters, formatters, debuggers, ignore)
   local linter_list = vim.tbl_flatten(vim.tbl_values(linters))
   local formatter_list = vim.tbl_flatten(vim.tbl_values(formatters))
@@ -212,12 +169,13 @@ local formatters = {
 local linters = {}
 local debuggers = {}
 local dont_install = {}
--- {
 -- not real formatters, but pseudo-formatters from conform.nvim
+-- {
 -- "trim_whitespace",
 -- "trim_newlines",
 -- "squeeze_blanks",
--- "injected",}
+-- "injected",
+-- }
 
 require("mason-null-ls").setup({
   ensure_installed = mason_autoinstall(linters, formatters, debuggers, dont_install),

@@ -19,18 +19,11 @@ require("lazy").setup(
     -- Core plugins
     "tpope/vim-fugitive",
     "tpope/vim-rhubarb",
-    "simrat39/rust-tools.nvim",
-
-    -- {
-    -- 	"terrortylor/nvim-comment",
-    -- 	config = function()
-    -- 		require("nvim_comment").setup()
-    -- 	end,
-    -- },
-
-    -- Detect tabstop and shiftwidth automatically
-    -- "tpope/vim-sleuth",
-
+    {
+      "mrcjkb/rustaceanvim",
+      version = "^4",
+      ft = { "rust" },
+    },
     {
       "neovim/nvim-lspconfig",
       dependencies = {
@@ -43,30 +36,6 @@ require("lazy").setup(
         require("lspconfig.ui.windows").default_options.border = "rounded"
         return opts
       end,
-      -- opts = {
-      -- 	diagnostics = {
-      -- 		underline = true,
-      -- 		update_in_insert = false,
-      -- 		virtual_text = {
-      -- 			spacing = 4,
-      -- 			source = "if_many",
-      -- 			prefix = "●",
-      -- 			-- prefix = "icons",
-      -- 		},
-      -- 		severity_sort = true,
-      -- 	},
-      -- 	-- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
-      -- 	inlay_hints = {
-      -- 		enabled = false,
-      -- 	},
-      -- 	-- add any global capabilities here
-      -- 	capabilities = {},
-      -- 	-- options for vim.lsp.buf.format
-      -- 	format = {
-      -- 		formatting_options = nil,
-      -- 		timeout_ms = nil,
-      -- 	},
-      -- },
     },
     {
       "jay-babu/mason-null-ls.nvim",

@@ -4,12 +4,6 @@ return {
   opts = {
     preview_config = { border = "rounded" },
     signs = {
-      -- add = { text = "+" },
-      -- change = { text = "~" },
-      -- delete = { text = "_" },
-      -- topdelete = { text = "‾" },
-      -- changedelete = { text = "~" },
-
       add = { text = "▌" },
       change = { text = "▌" },
       delete = { text = "▌" },
