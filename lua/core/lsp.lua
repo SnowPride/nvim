@@ -93,7 +93,7 @@ local servers = {
       "--log=error",
       --[[ "--query-driver=/usr/bin/g++", ]]
     },
-    filetypes = { "c", "cpp", "objc", "objcpp" },
+    filetypes = { "c", "cpp", "objc", "objcpp", "h" },
     -- root_dir = function(fname)
     --   return require("lspconfig.util").root_pattern(
     --     ".clangd",

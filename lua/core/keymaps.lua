@@ -55,6 +55,9 @@ vim.keymap.set("i", ";", ";<c-g>u")
 -- save file
 vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
+-- paste without overwriting register
+vim.keymap.set("v", "p", '"_dP"', { desc = "Paste without overwriting the register" })
+
 -- better indenting
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
