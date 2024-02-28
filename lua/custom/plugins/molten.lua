@@ -1,0 +1,67 @@
+return {
+  {
+    "GCBallesteros/NotebookNavigator.nvim",
+    keys = {
+      {
+        "<leader>jj",
+        function()
+          require("notebook-navigator").move_cell("d")
+        end,
+        desc = "Move cell up",
+      },
+      {
+        "<leader>jk",
+        function()
+          require("notebook-navigator").move_cell("u")
+        end,
+        desc = "Move cell down",
+      },
+      {
+        "<leader>jc",
+        "<cmd>lua require('notebook-navigator').run_cell()<cr>",
+        desc = "Run cell",
+      },
+      {
+        "<leader>jp",
+        "<cmd>MoltenInit python3<cr>",
+        silent = true,
+        noremap = true,
+        desc = "Start Python 3 kernel",
+      },
+    },
+    -- { "<leader>x", "<cmd>lua require('notebook-navigator').run_and_move()<cr>" },
+    dependencies = {
+      "echasnovski/mini.comment",
+      -- "hkupty/iron.nvim", -- repl provider
+      -- "akinsho/toggleterm.nvim", -- alternative repl provider
+      "benlubas/molten-nvim", -- alternative repl provider
+      -- "anuvyklack/hydra.nvim",
+    },
+    event = "VeryLazy",
+    opts = {
+      cell_markers = {
+        python = "##",
+      },
+      repl_provider = "molten",
+      -- syntax_highlight = true,
+    },
+    -- config = function()
+    --   local nn = require "notebook-navigator"
+    --   nn.setup({ activate_hydra_keys = "<leader>h" })
+    -- end,
+  },
+  {
+    "benlubas/molten-nvim",
+    version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+    dependencies = { "3rd/image.nvim" },
+    build = ":UpdateRemotePlugins",
+    init = function()
+      -- these are examples, not defaults. Please see the readme
+      vim.g.molten_image_provider = "image.nvim"
+      vim.g.molten_output_win_max_height = 20
+      vim.g.molten_auto_open_output = false
+      -- vim.g.molten_output_virt_lines = true
+      vim.g.molten_virt_text_output = true
+    end,
+  },
+}
