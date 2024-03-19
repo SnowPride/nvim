@@ -82,7 +82,8 @@ local servers = {
   -- golsp = {},
   pyright = {},
   rust_analyzer = {},
-  -- tsserver = {},
+  eslint = {},
+  tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
   lua_ls = {
@@ -155,14 +156,14 @@ local function mason_autoinstall(linters, formatters, debuggers, ignore)
 end
 
 local formatters = {
-  -- javascript = { "biome" },
+  javascript = { "prettier" },
   -- typescript = { "biome" },
   -- json = { "biome" },
   -- jsonc = { "biome" },
   lua = { "stylua" },
   python = { "isort", "black" },
-  -- yaml = { "prettier" },
-  -- html = { "prettier" },
+  yaml = { "prettier" },
+  html = { "prettier" },
   -- markdown = {
   --   "markdown-toc",
   --   "markdownlint",
