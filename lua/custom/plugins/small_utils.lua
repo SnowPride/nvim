@@ -6,7 +6,17 @@ return {
     end,
   },
   {
+    "echasnovski/mini.ai",
+    event = "VeryLazy",
+    opts = { n_lines = 500 },
+  },
+  {
     "echasnovski/mini.pairs",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
+    "echasnovski/mini.surround",
     event = "VeryLazy",
     opts = {},
   },
