@@ -55,4 +55,7 @@ return {
       -- refer to the configuration section below
     },
   },
+  {
+    "laytan/cloak.nvim",
+  },
 }
