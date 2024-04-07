@@ -39,7 +39,8 @@ return {
     version = "*",
     opts = {
       open_mapping = "<c-t>",
-      direction = "float",
+      shade_terminals = false,
+      -- direction = "float",
       float_opts = {
         border = "curved",
       },
