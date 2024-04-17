@@ -44,6 +44,11 @@ return {
       float_opts = {
         border = "curved",
       },
+      on_create = function()
+        pcall(function()
+          vim.cmd(":PinBuftype")
+        end)
+      end,
     },
   },
   {
