@@ -6,6 +6,7 @@ vim.defer_fn(function()
       "bash",
       "c",
       "cpp",
+      "dockerfile",
       "go",
       "html",
       "javascript",

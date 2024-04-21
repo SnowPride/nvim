@@ -80,6 +80,8 @@ local servers = {
     -- commands = {},
   },
   bashls = {},
+  docker_compose_language_service = {},
+  dockerls = {},
   gopls = {},
   marksman = {},
   pyright = {},
