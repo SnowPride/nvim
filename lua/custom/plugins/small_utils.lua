@@ -50,6 +50,7 @@ return {
     version = "*",
     opts = {
       open_mapping = "<c-t>",
+      persist_mode = false,
       shade_terminals = false,
       -- direction = "float",
       float_opts = {
