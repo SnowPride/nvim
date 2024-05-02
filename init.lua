@@ -19,6 +19,7 @@ require("lazy").setup(
     -- Core plugins
     "tpope/vim-fugitive",
     "tpope/vim-rhubarb",
+    -- "b0o/schemastore.nvim",
     {
       "mrcjkb/rustaceanvim",
       version = "^4",

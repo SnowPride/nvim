@@ -83,6 +83,14 @@ local servers = {
   docker_compose_language_service = {},
   dockerls = {},
   gopls = {},
+  yamlls = {
+    yaml = {
+      schemas = {
+        ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.{yml,yaml}",
+        kubernetes = "globPattern",
+      },
+    },
+  },
   marksman = {},
   pyright = {},
   rust_analyzer = {},
