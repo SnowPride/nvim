@@ -106,6 +106,7 @@ vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { de
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "Search by grep" })
 vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "Search diagnostics" })
 vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "Search resume" })
+vim.keymap.set("n", "<leader>so", require("telescope.builtin").oldfiles, { desc = "Search recently opened files" })
 
 -- lazygit window
 local Terminal = require("toggleterm.terminal").Terminal
