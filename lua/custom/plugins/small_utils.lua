@@ -11,6 +11,10 @@ return {
     end,
   },
   {
+    "sindrets/diffview.nvim",
+    opts = {},
+  },
+  {
     "vladdoster/remember.nvim",
     config = function()
       require("remember")
