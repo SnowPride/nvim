@@ -1,9 +1,9 @@
 --  This function gets run when an LSP connects to a particular buffer.
+
 local on_attach = function(_, bufnr)
 	local nmap = function(keys, func, desc)
 		vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
 	end
-
 	nmap("<leader>cr", vim.lsp.buf.rename, "Rename")
 	nmap("<leader>ca", vim.lsp.buf.code_action, "Code Action")
 	nmap("gd", require("telescope.builtin").lsp_definitions, "Goto definition")
@@ -32,6 +32,17 @@ local on_attach = function(_, bufnr)
 	nmap("<leader>cf", "<cmd>Format<cr>", "Format current buffer with LSP")
 end
 
+local rust_on_attach = function(_, bufnr)
+	local nmap = function(keys, func, desc)
+		vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+	end
+	nmap("<leader>ca", "<cmd>RustLsp codeAction<cr>", "Code Action")
+	nmap("<leader>cc", "<cmd>RustLsp openCargo<cr>", "Open Cargo.toml")
+	nmap("J", "<cmd>RustLsp joinLines<cr>", "Join lines")
+	nmap("<leader>ch", "<cmd>RustLsp view hir<cr>", "View HIR representation")
+	nmap("<leader>cm", "<cmd>RustLsp view mir<cr>", "View MIR representation")
+end
+
 -- Signcolumn Diagnostic icons
 for name, icon in pairs(require("core.icons").diagnostics) do
 	local sign_name = "DiagnosticSign" .. name
@@ -46,58 +57,58 @@ require("mason-lspconfig").setup()
 
 -- Enable the following language servers
 local servers = {
-  clangd = {
-    cmd = {
-      "clangd",
-      "--all-scopes-completion",
-      "--background-index",
-      "--clang-tidy",
-      "--compile_args_from=filesystem", -- lsp-> does not come from compie_commands.json
-      "--completion-parse=always",
-      "--completion-style=bundled",
-      "--cross-file-rename",
-      "--debug-origin",
-      "--enable-config", -- clangd 11+ supports reading from .clangd configuration file
-      "--fallback-style=Qt",
-      "--folding-ranges",
-      "--function-arg-placeholders",
-      "--header-insertion=iwyu",
-      "--pch-storage=memory", -- could also be disk
-      "--suggest-missing-includes",
-      "-j=4",              -- number of workers
-      -- "--resource-dir="
-      "--log=error",
-      --[[ "--query-driver=/usr/bin/g++", ]]
-    },
-    filetypes = { "c", "cpp", "objc", "objcpp", "h" },
-    single_file_support = true,
-    init_options = {
-      compilationDatabasePath = vim.fn.getcwd() .. "/build",
-    },
-    capabilities = {
-      offsetEncoding = { "utf-16" },
-    },
-    -- commands = {},
-  },
-  bashls = {},
-  docker_compose_language_service = {},
-  dockerls = {},
-  gopls = {},
-  yamlls = {
-    yaml = {
-      schemas = {
-        ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.{yml,yaml}",
-        kubernetes = "globPattern",
-      },
-    },
-  },
-  marksman = {},
-  pyright = {},
-  rust_analyzer = {},
-  sqlls = {},
-  eslint = {},
-  tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+	clangd = {
+		cmd = {
+			"clangd",
+			"--all-scopes-completion",
+			"--background-index",
+			"--clang-tidy",
+			"--compile_args_from=filesystem", -- lsp-> does not come from compie_commands.json
+			"--completion-parse=always",
+			"--completion-style=bundled",
+			"--cross-file-rename",
+			"--debug-origin",
+			"--enable-config", -- clangd 11+ supports reading from .clangd configuration file
+			"--fallback-style=Qt",
+			"--folding-ranges",
+			"--function-arg-placeholders",
+			"--header-insertion=iwyu",
+			"--pch-storage=memory", -- could also be disk
+			"--suggest-missing-includes",
+			"-j=4", -- number of workers
+			-- "--resource-dir="
+			"--log=error",
+			--[[ "--query-driver=/usr/bin/g++", ]]
+		},
+		filetypes = { "c", "cpp", "objc", "objcpp", "h" },
+		single_file_support = true,
+		init_options = {
+			compilationDatabasePath = vim.fn.getcwd() .. "/build",
+		},
+		capabilities = {
+			offsetEncoding = { "utf-16" },
+		},
+		-- commands = {},
+	},
+	bashls = {},
+	docker_compose_language_service = {},
+	dockerls = {},
+	gopls = {},
+	yamlls = {
+		yaml = {
+			schemas = {
+				["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.{yml,yaml}",
+				kubernetes = "globPattern",
+			},
+		},
+	},
+	marksman = {},
+	pyright = {},
+	rust_analyzer = {},
+	sqlls = {},
+	eslint = {},
+	tsserver = {},
+	-- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
 	lua_ls = {
 		Lua = {
@@ -140,7 +151,10 @@ mason_lspconfig.setup_handlers({
 require("rustaceanvim")
 vim.g.rustaceanvim = {
 	server = {
-		on_attach = on_attach,
+		on_attach = function(_, bufnr)
+			on_attach(_, bufnr)
+			rust_on_attach(_, bufnr)
+		end,
 		default_settings = {
 			["rust-analyzer"] = {
 				cargo = {
