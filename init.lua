@@ -85,9 +85,6 @@ require("lazy").setup(
 			build = ":TSUpdate",
 		},
 
-		-- Sets up nvim-lspconfig
-		require("core.autoformat"),
-
 		-- Extra plugins
 		{ import = "custom.plugins" },
 	},
