@@ -29,7 +29,7 @@ local on_attach = function(_, bufnr)
 		vim.lsp.buf.format()
 	end, { desc = "Format current buffer with LSP" })
 
-	nmap("<leader>cf", "<cmd>Format<cr>", "Format current buffer with LSP")
+	nmap("<leader>cf", "<cmd>FormatToggle<cr>", "Toggle format on save")
 end
 
 local rust_on_attach = function(_, bufnr)
