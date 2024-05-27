@@ -103,13 +103,12 @@ local servers = {
 		},
 	},
 	marksman = {},
-	pyright = {},
+	basedpyright = {},
 	rust_analyzer = {},
 	sqlls = {},
 	eslint = {},
 	tsserver = {},
 	-- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
 	lua_ls = {
 		Lua = {
 			workspace = { checkThirdParty = false },
