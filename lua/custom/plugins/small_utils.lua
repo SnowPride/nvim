@@ -47,6 +47,11 @@ return {
 			require("remember")
 		end,
 	},
+  {
+    "echasnovski/mini.cursorword",
+    event = "VeryLazy",
+    opts = {},
+  },
 	{
 		"echasnovski/mini.ai",
 		event = "VeryLazy",
