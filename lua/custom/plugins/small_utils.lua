@@ -1,24 +1,25 @@
 return {
-  {
-    "folke/flash.nvim",
-    event = "VeryLazy",
-    opts = {},
+	{
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		opts = {},
     -- stylua: ignore
     keys = {
-      { "s",     mode = { "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "s",     mode = { "x" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "s",     mode = { "o" }, function() require("flash").jump() end,              desc = "Flash" },
       { "r",     mode = "o",          function() require("flash").remote() end,            desc = "Remote Flash" },
       { "R",     mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<c-s>", mode = { "c" },      function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
-  },
-  {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = function()
-      vim.fn["mkdp#util#install"]()
-    end,
-  },
+	},
+	{
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		ft = { "markdown" },
+		build = function()
+			vim.fn["mkdp#util#install"]()
+		end,
+	},
 	{
 		"ray-x/lsp_signature.nvim",
 		event = "VeryLazy",
@@ -47,11 +48,11 @@ return {
 			require("remember")
 		end,
 	},
-  {
-    "echasnovski/mini.cursorword",
-    event = "VeryLazy",
-    opts = {},
-  },
+	{
+		"echasnovski/mini.cursorword",
+		event = "VeryLazy",
+		opts = {},
+	},
 	{
 		"echasnovski/mini.ai",
 		event = "VeryLazy",
