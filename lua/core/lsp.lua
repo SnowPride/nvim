@@ -10,7 +10,7 @@ local on_attach = function(_, bufnr)
 	nmap("gr", require("telescope.builtin").lsp_references, "Goto references")
 	nmap("gI", require("telescope.builtin").lsp_implementations, "Goto Implementation")
 	nmap("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type Definition")
-	nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "Document Symbols")
+	nmap("<leader>cs", require("telescope.builtin").lsp_document_symbols, "Document Symbols")
 	nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Workspace Symbols")
 
 	nmap("K", vim.lsp.buf.hover, "Hover Documentation")

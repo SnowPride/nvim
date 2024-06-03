@@ -37,6 +37,7 @@ require("lazy").setup(
 				require("lspconfig.ui.windows").default_options.border = "rounded"
 				return opts
 			end,
+			config = function() end,
 		},
 		{
 			"jay-babu/mason-null-ls.nvim",
@@ -85,6 +86,7 @@ require("lazy").setup(
 			build = ":TSUpdate",
 		},
 
+		{ import = "core.debug" },
 		-- Extra plugins
 		{ import = "custom.plugins" },
 	},
@@ -110,7 +112,7 @@ require("custom.keymaps")
 require("which-key").register({
 	["<leader>b"] = { name = "Buffer", _ = "which_key_ignore" },
 	["<leader>c"] = { name = "Code", _ = "which_key_ignore", mode = { "n", "v" } },
-	["<leader>d"] = { name = "Document", _ = "which_key_ignore" },
+	["<leader>d"] = { name = "Debug", _ = "which_key_ignore" },
 	["<leader>g"] = { name = "Git", _ = "which_key_ignore" },
 	["<leader>s"] = { name = "Search", _ = "which_key_ignore" },
 	["<leader>w"] = { name = "Workspace", _ = "which_key_ignore" },
