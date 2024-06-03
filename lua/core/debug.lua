@@ -68,23 +68,25 @@ return {
 						host = "127.0.0.1",
 						port = "40000",
 					},
-					-- cwd = "${workspaceFolder}",
+					cwd = "${workspaceFolder}",
 					trace = "verbose",
 					apiVersion = "2",
+					-- Might need
+					-- substitutePath = {
+					-- 	{ from = "${workspaceFolder}", to = "/app" },
+					-- },
 				},
 			},
 			delve = {
-				-- On Windows delve must be run attached or it crashes.
-				-- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-				-- detached = vim.fn.has("win32") == 0,
+				type = "server",
 				port = "40000",
 			},
 		})
 
 		-- Don't start dlv if debugging remotely
-		dap.adapters.go = {
-			type = "server",
-			port = "40000",
-		}
+		-- dap.adapters.go = {
+		-- 	type = "server",
+		-- 	port = "40000",
+		-- }
 	end,
 }
