@@ -55,6 +55,16 @@ end
 require("mason").setup({ ui = { border = "rounded" } })
 require("mason-lspconfig").setup()
 
+-- set file type for docker docker_compose_language_service
+local function set_filetype(pattern, filetype)
+	vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+		pattern = pattern,
+		command = "set filetype=" .. filetype,
+	})
+end
+
+set_filetype({ "compose.*", "docker-compose.*" }, "yaml.docker-compose")
+
 -- Enable the following language servers
 local servers = {
 	clangd = {
@@ -101,6 +111,7 @@ local servers = {
 				kubernetes = "globPattern",
 			},
 		},
+		filetypes = { "yaml", "yaml.gitlab" },
 	},
 	marksman = {},
 	basedpyright = {},
