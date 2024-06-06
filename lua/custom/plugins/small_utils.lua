@@ -83,6 +83,12 @@ return {
 		end,
 	},
 	{
+		-- TODO: remove when upgrading to 0.10
+		-- and use `winfixbuf` instead?
+		"stevearc/stickybuf.nvim",
+		opts = {},
+	},
+	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
 		opts = {
@@ -93,11 +99,6 @@ return {
 			float_opts = {
 				border = "curved",
 			},
-			on_create = function()
-				pcall(function()
-					vim.cmd(":PinBuftype")
-				end)
-			end,
 		},
 	},
 	{
