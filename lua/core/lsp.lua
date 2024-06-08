@@ -29,7 +29,7 @@ local on_attach = function(_, bufnr)
 		vim.lsp.buf.format()
 	end, { desc = "Format current buffer with LSP" })
 
-	nmap("<leader>cf", "<cmd>FormatToggle<cr>", "Toggle format on save")
+	nmap("<leader>cx", "<cmd>FormatToggle<cr>", "Toggle format on save")
 end
 
 local rust_on_attach = function(_, bufnr)
@@ -174,6 +174,31 @@ vim.g.rustaceanvim = {
 		},
 	},
 }
+
+require("crates").setup({
+	lsp = {
+		enabled = true,
+		on_attach = function(_, bufnr)
+			on_attach(_, bufnr)
+			local crates = require("crates")
+			vim.keymap.set("n", "<leader>cc", crates.show_crate_popup, { desc = "Show crate info" })
+			vim.keymap.set("n", "<leader>cf", crates.show_features_popup, { desc = "Show crate features" })
+		end,
+		actions = true,
+		completion = true,
+		hover = true,
+	},
+	completion = {
+		crates = {
+			enabled = true,
+			max_results = 8,
+			min_chars = 3,
+		},
+	},
+	popup = {
+		autofocus = true,
+	},
+})
 
 -- Given the linter and formatter list, extract a list of all tools that need to be installed
 local function mason_autoinstall(linters, formatters, debuggers, ignore)

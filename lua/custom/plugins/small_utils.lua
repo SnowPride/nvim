@@ -31,10 +31,8 @@ return {
 			require("lsp_signature").setup(opts)
 		end,
 	},
-
 	{
 		"saecki/crates.nvim",
-		tag = "stable",
 		event = { "BufRead Cargo.toml" },
 		opts = {},
 	},
