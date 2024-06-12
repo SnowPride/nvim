@@ -55,6 +55,8 @@ cmp.setup({
   }),
   preselect = cmp.PreselectMode.None,
   sources = {
+    { name = "path" },
+    { name = "buffer" },
     { name = "nvim_lsp" },
     { name = "luasnip" },
   },
