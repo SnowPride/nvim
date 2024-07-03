@@ -8,7 +8,7 @@ return {
       "!lazy", -- Commit hashes get highlighted sometimes.
     },
     user_default_options = {
-      RGB = true,   -- #RGB hex codes.
+      RGB = true, -- #RGB hex codes.
       RRGGBB = true, -- #RRGGBB hex codes.
       RRGGBBAA = true, -- #RRGGBBAA hex codes.
       AARRGGBB = true, -- 0xAARRGGBB hex codes.
