@@ -59,6 +59,7 @@ return {
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
+    enabled = true,
     opts = {},
   },
   {
@@ -91,6 +92,7 @@ return {
     version = "*",
     opts = {
       open_mapping = "<c-t>",
+      close_on_exit = true,
       persist_mode = false,
       shade_terminals = false,
       -- direction = "float",

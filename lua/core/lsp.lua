@@ -1,9 +1,16 @@
 --  This function gets run when an LSP connects to a particular buffer.
-
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   local nmap = function(keys, func, desc)
     vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
   end
+
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint.enable(false)
+    nmap("<leader>ch", function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, "Toggle inlay hints")
+  end
+
   nmap("<leader>cr", vim.lsp.buf.rename, "Rename")
   nmap("<leader>ca", vim.lsp.buf.code_action, "Code Action")
   nmap("gd", require("telescope.builtin").lsp_definitions, "Goto definition")
@@ -39,7 +46,7 @@ local rust_on_attach = function(_, bufnr)
   nmap("<leader>ca", "<cmd>RustLsp codeAction<cr>", "Code Action")
   nmap("<leader>cc", "<cmd>RustLsp openCargo<cr>", "Open Cargo.toml")
   nmap("J", "<cmd>RustLsp joinLines<cr>", "Join lines")
-  nmap("<leader>ch", "<cmd>RustLsp view hir<cr>", "View HIR representation")
+  -- nmap("<leader>ch", "<cmd>RustLsp view hir<cr>", "View HIR representation")
   nmap("<leader>cm", "<cmd>RustLsp view mir<cr>", "View MIR representation")
 end
 
@@ -120,7 +127,16 @@ local servers = {
     filetypes = { "yaml", "yaml.gitlab" },
   },
   marksman = {},
-  basedpyright = {},
+  basedpyright = {
+    basedpyright = {
+      analysis = {
+        diagnosticSeverityOverrides = {
+          reportUnknownMemberType = false,
+        },
+      },
+      -- disableLanguageServices = true,
+    },
+  },
   rust_analyzer = {},
   sqlls = {},
   eslint = {},
@@ -130,6 +146,20 @@ local servers = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
+    },
+  },
+  ansiblels = {
+    redhat = {
+      telemetry = {
+        enabled = false,
+      },
+    },
+    ansible = {
+      validation = {
+        lint = {
+          enabled = false,
+        },
+      },
     },
   },
 }
@@ -144,7 +174,6 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require("mason-lspconfig")
-
 mason_lspconfig.setup({
   ensure_installed = vim.tbl_keys(servers),
 })

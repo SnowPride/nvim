@@ -60,6 +60,8 @@ return {
       vim.g.molten_virt_text_output = true
       vim.g.molten_virt_text_max_lines = 40
       vim.g.molten_wrap_output = false
+      vim.g.molten_auto_open_output = false
     end,
   },
+  { "3rd/image.nvim", opts = {} },
 }

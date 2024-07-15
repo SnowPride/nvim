@@ -1,5 +1,9 @@
 require("core.options")
 
+-- Example for configuring Neovim to load user-installed installed Lua rocks:
+package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.local/share/lua/5.1/?/init.lua"
+package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.local/share/lua/5.1/?.lua"
+
 -- Install package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -36,11 +40,10 @@ require("lazy").setup(
         { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
         "folke/neodev.nvim",
       },
-      opts = function(_, opts)
+      opts = { inlay_hints = { enabled = true } },
+      config = function()
         require("lspconfig.ui.windows").default_options.border = "rounded"
-        return opts
       end,
-      config = function() end,
     },
     {
       "jay-babu/mason-null-ls.nvim",
@@ -120,6 +123,9 @@ require("which-key").register({
   ["<leader>s"] = { name = "Search", _ = "which_key_ignore" },
   ["<leader>w"] = { name = "Workspace", _ = "which_key_ignore" },
 })
+
+-- Set up virtualenv for neovim python integration
+vim.g.python3_host_prog = vim.fn.expand("~/.venv/neovim/bin/python3")
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
