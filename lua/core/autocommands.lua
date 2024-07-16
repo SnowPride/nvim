@@ -17,6 +17,7 @@ vim.api.nvim_create_autocmd("FileType", {
     "lspinfo",
     "man",
     "notify",
+    "fugitive*",
     "qf",
     "query",
     "spectre_panel",
