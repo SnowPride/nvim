@@ -64,3 +64,6 @@ require("which-key").register({
   ["<leader>j"] = { name = "Jupyter", _ = "which_key_ignore" },
   ["<leader>t"] = { name = "Trouble", _ = "which_key_ignore" },
 })
+
+-- The line beneath this is called `modeline`. See `:help modeline`
+-- vim: ts=2 sts=2 sw=2 et
