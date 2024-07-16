@@ -1,3 +1,4 @@
+--  TODO: clean up this whole file
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)
   local nmap = function(keys, func, desc)

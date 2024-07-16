@@ -1,3 +1,4 @@
+--- Taken from Lazyvim
 ---@class ui
 local M = {}
 
@@ -50,7 +51,7 @@ function M.get_mark(buf, lnum)
   end
 end
 
----@param sign? Sign
+---@aram sign? Sign
 ---@param len? number
 function M.icon(sign, len)
   sign = sign or {}

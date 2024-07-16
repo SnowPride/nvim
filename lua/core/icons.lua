@@ -1,3 +1,4 @@
+--- Taken from Lazyvim
 return {
   misc = {
     dots = "󰇘",

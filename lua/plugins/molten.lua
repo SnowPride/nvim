@@ -63,5 +63,4 @@ return {
       vim.g.molten_auto_open_output = false
     end,
   },
-  { "3rd/image.nvim", opts = {} },
 }
