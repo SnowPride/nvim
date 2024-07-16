@@ -52,7 +52,7 @@ local rust_on_attach = function(_, bufnr)
 end
 
 -- Signcolumn Diagnostic icons
-for name, icon in pairs(require("core.icons").diagnostics) do
+for name, icon in pairs(require("config.icons").diagnostics) do
   local sign_name = "DiagnosticSign" .. name
   local hl_name = "Diagnostic" .. name
   vim.fn.sign_define(sign_name, { text = icon, texthl = hl_name, numhl = "" })
