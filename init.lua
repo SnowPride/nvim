@@ -1,5 +1,5 @@
 -- Customize default nvim settings
-require("core.options")
+require("config.options")
 
 -- Load user-installed installed Luarocks packages
 -- luarocks path configured to $HOME/.local
@@ -49,9 +49,9 @@ require("lazy").setup({
   },
 })
 
-require("core.lsp")
-require("core.keymaps")
-require("core.autocommands")
+require("config.lsp")
+require("config.keymaps")
+require("config.autocommands")
 
 -- document existing key chains
 require("which-key").register({
