@@ -5,11 +5,11 @@ return {
     opts = {},
     -- stylua: ignore
     keys = {
-      { "s",     mode = { "x" }, function() require("flash").jump() end,              desc = "Flash" },
-      { "s",     mode = { "o" }, function() require("flash").jump() end,              desc = "Flash" },
-      { "r",     mode = "o",          function() require("flash").remote() end,            desc = "Remote Flash" },
-      { "R",     mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" },      function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+      { "s", mode = { "x" }, function() require("flash").jump() end, desc = "Flash" },
+      { "s", mode = { "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
   {
@@ -37,10 +37,6 @@ return {
     opts = {},
   },
   {
-    "sindrets/diffview.nvim",
-    opts = {},
-  },
-  {
     "vladdoster/remember.nvim",
     config = function()
       require("remember")
@@ -59,7 +55,6 @@ return {
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
-    enabled = true,
     opts = {},
   },
   {
@@ -80,12 +75,6 @@ return {
       require("project_nvim").setup()
       require("telescope").load_extension("projects")
     end,
-  },
-  {
-    -- TODO: remove when upgrading to 0.10
-    -- and use `winfixbuf` instead?
-    "stevearc/stickybuf.nvim",
-    opts = {},
   },
   {
     "akinsho/toggleterm.nvim",
@@ -120,9 +109,5 @@ return {
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
     },
-  },
-  {
-    "laytan/cloak.nvim",
-    opts = {},
   },
 }

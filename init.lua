@@ -36,10 +36,11 @@ require("lazy").setup({
     "tpope/vim-fugitive",
     "tpope/vim-rhubarb",
     "felipec/vim-sanegx",
-    {
-      "folke/which-key.nvim",
-      opts = { window = { border = "rounded" } },
-    },
+    "laytan/cloak.nvim",
+    -- TODO: remove when upgrading to 0.10
+    -- and use `winfixbuf` instead?
+    "stevearc/stickybuf.nvim",
+
     { import = "plugins" },
   },
 
@@ -52,18 +53,3 @@ require("lazy").setup({
 require("config.lsp")
 require("config.keymaps")
 require("config.autocommands")
-
--- document existing key chains
-require("which-key").register({
-  ["<leader>b"] = { name = "Buffer", _ = "which_key_ignore" },
-  ["<leader>c"] = { name = "Code", _ = "which_key_ignore" },
-  ["<leader>d"] = { name = "Debug", _ = "which_key_ignore" },
-  ["<leader>g"] = { name = "Git", _ = "which_key_ignore" },
-  ["<leader>s"] = { name = "Search", _ = "which_key_ignore" },
-  ["<leader>w"] = { name = "Workspace", _ = "which_key_ignore" },
-  ["<leader>j"] = { name = "Jupyter", _ = "which_key_ignore" },
-  ["<leader>t"] = { name = "Trouble", _ = "which_key_ignore" },
-})
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
