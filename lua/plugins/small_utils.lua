@@ -108,5 +108,10 @@ return {
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
     },
+    keys = {
+      { "<leader>tq", "<cmd>TodoQuickFix<cr>", desc = "Open quickfix list with all the TODOs" },
+      { "<leader>td", "<cmd>Trouble diagnostics<cr>", desc = "Toggle Trouble for the current file" },
+      { "<leader>tt", "<cmd>Trouble todo<cr>", desc = "Toggle TODOs for the current file" },
+    },
   },
 }

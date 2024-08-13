@@ -129,16 +129,6 @@ vim.api.nvim_set_keymap(
   { noremap = true, silent = true, desc = "Open lazygit" }
 )
 
--- Trouble
-vim.keymap.set("n", "<leader>tq", "<cmd>TodoQuickFix<cr>", { desc = "Open quickfix list with all the TODOs" })
-vim.keymap.set(
-  "n",
-  "<leader>td",
-  "<cmd>TroubleToggle document_diagnostics<cr>",
-  { desc = "Toggle Trouble for the current file" }
-)
-vim.keymap.set("n", "<leader>tt", "<cmd>TroubleToggle todo<cr>", { desc = "Toggle TODOs for the current file" })
-
 -- Floaterm
 function _G.set_terminal_keymaps()
   local opts = { buffer = 0 }
