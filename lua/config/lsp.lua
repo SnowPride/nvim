@@ -141,7 +141,7 @@ local servers = {
   rust_analyzer = {},
   sqlls = {},
   eslint = {},
-  tsserver = {},
+  ts_ls = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
   lua_ls = {
     Lua = {
@@ -158,10 +158,11 @@ local servers = {
     ansible = {
       validation = {
         lint = {
-          enabled = false,
+          enabled = true,
         },
       },
     },
+    filetypes = { "yaml.ansible" },
   },
 }
 
@@ -238,8 +239,8 @@ require("crates").setup({
 
 -- Given the linter and formatter list, extract a list of all tools that need to be installed
 local function mason_autoinstall(linters, formatters, debuggers, ignore)
-  local linter_list = vim.tbl_flatten(vim.tbl_values(linters))
-  local formatter_list = vim.tbl_flatten(vim.tbl_values(formatters))
+  local linter_list = vim.iter(vim.tbl_values(linters)):flatten():totable()
+  local formatter_list = vim.iter(vim.tbl_values(formatters)):flatten():totable()
   local tools = vim.list_extend(linter_list, formatter_list)
   vim.list_extend(tools, debuggers)
 
@@ -276,7 +277,7 @@ local formatters = {
   -- ["*"] = { "codespell" },
 }
 
-local linters = {}
+local linters = { ansible = { "ansible-lint" } }
 local debuggers = {}
 local dont_install = {}
 -- not real formatters, but pseudo-formatters from conform.nvim

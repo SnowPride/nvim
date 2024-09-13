@@ -30,10 +30,10 @@ return {
           "tsx",
           "typescript",
           "vim",
-          "vimdoc",
+          -- "vimdoc",
         },
         auto_install = false,
-        highlight = { enable = true },
+        highlight = { enable = true, disable = { "dotenv" } },
         -- TODO: check all these options
         indent = { enable = true },
         incremental_selection = {
@@ -95,6 +95,10 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
+    opts = {
+      max_lines = 2,
+      trim_scope = "inner",
+    },
     config = {
       vim.keymap.set("n", "[c", function()
         require("treesitter-context").go_to_context(vim.v.count1)
