@@ -63,9 +63,21 @@ return {
   },
   {
     "max397574/better-escape.nvim",
-    config = function()
-      require("better_escape").setup()
-    end,
+    opts = {
+      default_mappings = false,
+      mappings = {
+        i = {
+          j = {
+            k = function()
+              if vim.bo.filetype == "toggleterm" then
+                return "<c-v>j<c-v>k"
+              end
+              return "<esc>"
+            end,
+          },
+        },
+      },
+    },
   },
   {
     "ahmedkhalf/project.nvim",
