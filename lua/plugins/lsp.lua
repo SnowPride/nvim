@@ -28,9 +28,9 @@ return {
     "stevearc/conform.nvim",
     opts = {},
   },
-  {
-    -- "b0o/schemastore.nvim",
-    -- "mfussenegger/nvim-ansible",
-    "Lun4m/nvim-ansible",
-  },
+  -- {
+  -- "b0o/schemastore.nvim",
+  -- "mfussenegger/nvim-ansible",
+  -- "Lun4m/nvim-ansible",
+  -- },
 }

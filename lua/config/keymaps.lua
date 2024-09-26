@@ -118,14 +118,14 @@ vim.keymap.set("n", "<leader>so", require("telescope.builtin").oldfiles, { desc 
 local Terminal = require("toggleterm.terminal").Terminal
 local lazygit = Terminal:new({ cmd = "lazygit", direction = "float", hidden = true })
 
-function _lazygit_toggle()
+function _Lazygit_toggle()
   lazygit:toggle()
 end
 
 vim.api.nvim_set_keymap(
   "n",
   "<leader>gg",
-  "<cmd>lua _lazygit_toggle()<CR>",
+  "<cmd>lua _Lazygit_toggle()<CR>",
   { noremap = true, silent = true, desc = "Open lazygit" }
 )
 

@@ -34,9 +34,12 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-  pattern = "*/ansible/*.yaml",
-  callback = function()
-    vim.cmd("set filetype=yaml.ansible")
-  end,
+vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile" }, {
+  pattern = ".env*",
+  command = "set filetype=dotenv",
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile" }, {
+  pattern = { vim.fn.expand("~") .. "*ansible*.yml", vim.fn.expand("~") .. "*ansible*.yaml" },
+  command = "set filetype=yaml.ansible",
 })

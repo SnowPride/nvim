@@ -36,7 +36,6 @@ require("lazy").setup({
     "tpope/vim-fugitive",
     "tpope/vim-rhubarb",
     "felipec/vim-sanegx",
-    { "laytan/cloak.nvim", opts = {} },
     -- TODO: remove when upgrading to 0.10
     -- and use `winfixbuf` instead?
     { "stevearc/stickybuf.nvim", opts = {} },
