@@ -47,8 +47,13 @@ require("lazy").setup({
   ui = {
     border = "rounded",
   },
+  rocks = {
+    hererocks = true,
+  },
 })
 
+-- Specialized configurations
 require("config.lsp")
+require("config.format_lint_debug")
 require("config.keymaps")
 require("config.autocommands")

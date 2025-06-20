@@ -8,6 +8,13 @@ vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = tr
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
+-- Remap digraph kyebinding
+vim.keymap.set("i", "<C-f>", "<C-k>")
+
+-- Add semicolon eol
+-- TODO: figure out why <C-;> doesn't work
+vim.keymap.set("n", "<leader>;", "A;<esc>", { silent = true, desc = "Add semicolon at the end of the line" })
+
 -- Move in insert and command mode
 vim.keymap.set({ "i", "c" }, "<C-h>", "<Left>", { remap = true })
 vim.keymap.set({ "i", "c" }, "<C-j>", "<Down>", { remap = true })
@@ -116,7 +123,16 @@ vim.keymap.set("n", "<leader>so", require("telescope.builtin").oldfiles, { desc 
 
 -- lazygit window
 local Terminal = require("toggleterm.terminal").Terminal
-local lazygit = Terminal:new({ cmd = "lazygit", direction = "float", hidden = true })
+local lazygit = Terminal:new({
+  cmd = "lazygit",
+  direction = "float",
+  hidden = true,
+  on_open = function(_)
+    vim.keymap.del("t", "<C-h>", { buffer = 0 })
+    vim.keymap.del("t", "<C-k>", { buffer = 0 })
+    vim.keymap.del("t", "<C-l>", { buffer = 0 })
+  end,
+})
 
 function _Lazygit_toggle()
   lazygit:toggle()
@@ -138,4 +154,34 @@ function _G.set_terminal_keymaps()
 end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
-vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+-- vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
+
+vim.api.nvim_create_autocmd({ "TermOpen" }, {
+  pattern = "term://*",
+  callback = set_terminal_keymaps,
+})
+
+local function insert_code_block()
+  local in_chunk, _ = require("otter.keeper").get_current_language_context()
+  vim.api.nvim_feedkeys(
+    vim.api.nvim_replace_termcodes("<esc>", true, false, true), "n", true
+  )
+  local keys
+  if in_chunk then
+    keys = "o```<cr><cr>```{python}<esc>o"
+  else
+    keys = "o```{python}<cr>```<esc>O"
+  end
+  keys = vim.api.nvim_replace_termcodes(keys, true, false, true)
+  vim.api.nvim_feedkeys(keys, 'n', false)
+end
+
+-- Quarto/molten
+vim.keymap.set("n", "<leader>js", "<cmd>MoltenInit<cr>", { silent = true, noremap = true, desc = "Start kernel" })
+vim.keymap.set("n", "<leader>je", ":noautocmd MoltenEnterOutput<CR>", { silent = true, desc = 'Show/enter output' })
+vim.keymap.set("n", "<leader>jb", "<cmd>QuartoSendBelow<cr>", { desc = "Run all cell below" })
+vim.keymap.set("n", "<leader>jd", "<cmd>QuartoSendAbove<cr>", { desc = "Run all cell above" })
+vim.keymap.set("n", "<leader>ja", "<cmd>QuartoSendAll<cr>", { desc = "Run all cell" })
+vim.keymap.set("n", "<leader>jc", "<cmd>QuartoSend<cr>", { desc = "Run current cell" })
+vim.keymap.set("n", "<leader>jp", insert_code_block, { desc = "Insert Python code chunk" })
+vim.keymap.set("n", "<leader>jo", require("otter").activate, { desc = "Activate otter" })

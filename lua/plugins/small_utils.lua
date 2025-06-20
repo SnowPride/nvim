@@ -1,14 +1,44 @@
 return {
   {
+    "NStefan002/screenkey.nvim",
+    lazy = false,
+    version = "*", -- or branch = "dev", to use the latest commit
+  },
+  {
     "folke/flash.nvim",
     event = "VeryLazy",
-    opts = {},
+    opts = {
+      jump = {
+        autojump = true,
+      },
+      label = {
+        uppercase = false,
+      },
+    },
     -- stylua: ignore
     keys = {
-      { "s", mode = { "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-_>", mode = { "n" }, function() require("flash").jump() end, desc = "Flash earch" },
+      { "s",     mode = { "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "r",     mode = "o",          function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",     mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-/>", mode = { "n" },      function() require("flash").jump() end,              desc = "Flash search" },
+    },
+  },
+  {
+    {
+      "3rd/image.nvim",
+      opts = {},
+    },
+  },
+  -- {
+  --   rocks = {
+  --     hererocks = true, -- recommended if you do not have global installation of Lua 5.1.
+  --   },
+  -- },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    opts = {
+      completions = { lsp = { enabled = true } },
     },
   },
   {
@@ -17,17 +47,6 @@ return {
     ft = { "markdown" },
     build = function()
       vim.fn["mkdp#util#install"]()
-    end,
-  },
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "VeryLazy",
-    opts = {
-      floating_window = false,
-      hint_prefix = " ",
-    },
-    config = function(_, opts)
-      require("lsp_signature").setup(opts)
     end,
   },
   {
@@ -106,8 +125,8 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
       highlight = {
-        keyword = "fg",
-        pattern = [[(KEYWORDS)\s*(\([^\)]*\))?:]],
+        keyword = "wide_fg",
+        pattern = [[.*<((KEYWORDS)\s*(\([^\)]*\))?):]],
       },
     },
   },
@@ -118,9 +137,9 @@ return {
       auto_preview = false,
     },
     keys = {
-      { "<leader>tq", "<cmd>TodoQuickFix<cr>", desc = "Open quickfix list with all the TODOs" },
+      { "<leader>tq", "<cmd>TodoQuickFix<cr>",        desc = "Open quickfix list with all the TODOs" },
       { "<leader>td", "<cmd>Trouble diagnostics<cr>", desc = "Toggle Trouble for the current file" },
-      { "<leader>tt", "<cmd>Trouble todo<cr>", desc = "Toggle TODOs for the current file" },
+      { "<leader>tt", "<cmd>Trouble todo<cr>",        desc = "Toggle TODOs for the current file" },
     },
   },
   {

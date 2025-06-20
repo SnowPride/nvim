@@ -1,4 +1,5 @@
 --  TODO: clean up this whole file
+--
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)
   local nmap = function(keys, func, desc)
@@ -8,8 +9,23 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.inlayHintProvider then
     vim.lsp.inlay_hint.enable(false)
     nmap("<leader>ch", function()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
     end, "Toggle inlay hints")
+  end
+
+  if client.name == "rust-analyzer" then
+    -- nmap("<leader>ca", "<cmd>RustLsp codeAction<cr>", "Code Action")
+    nmap("<leader>cc", "<cmd>RustLsp openCargo<cr>", "Open Cargo.toml")
+    nmap("J", "<cmd>RustLsp joinLines<cr>", "Join lines")
+    -- nmap("<leader>ch", "<cmd>RustLsp view hir<cr>", "View HIR representation")
+    nmap("<leader>cm", "<cmd>RustLsp view mir<cr>", "View MIR representation")
+    nmap("<leader>ct", "<cmd>RustLsp testables<cr>", "Open Rust test selector")
+  end
+
+  if client.name == "crates.nvim" then
+    local crates = require("crates")
+    vim.keymap.set("n", "<leader>cc", crates.show_crate_popup, { desc = "Show crate info" })
+    vim.keymap.set("n", "<leader>cf", crates.show_features_popup, { desc = "Show crate features" })
   end
 
   nmap("<leader>cr", vim.lsp.buf.rename, "Rename")
@@ -40,17 +56,6 @@ local on_attach = function(client, bufnr)
   nmap("<leader>cx", "<cmd>FormatToggle<cr>", "Toggle format on save")
 end
 
-local rust_on_attach = function(_, bufnr)
-  local nmap = function(keys, func, desc)
-    vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
-  end
-  nmap("<leader>ca", "<cmd>RustLsp codeAction<cr>", "Code Action")
-  nmap("<leader>cc", "<cmd>RustLsp openCargo<cr>", "Open Cargo.toml")
-  nmap("J", "<cmd>RustLsp joinLines<cr>", "Join lines")
-  -- nmap("<leader>ch", "<cmd>RustLsp view hir<cr>", "View HIR representation")
-  nmap("<leader>cm", "<cmd>RustLsp view mir<cr>", "View MIR representation")
-end
-
 -- Signcolumn Diagnostic icons
 for name, icon in pairs(require("config.icons").diagnostics) do
   local sign_name = "DiagnosticSign" .. name
@@ -59,10 +64,17 @@ for name, icon in pairs(require("config.icons").diagnostics) do
 end
 
 -- mason-lspconfig requires that these setup functions are called in this order
--- before setting up the servers.
-require("mason").setup({ ui = { border = "rounded" } })
-require("mason-lspconfig").setup()
+-- before setting up the eervers.
+require("mason").setup({
+  -- Activate this for testing
+  -- registries = {
+  --   "file:~/repos/mason-registry",
+  -- },
+  ui = { border = "rounded" },
+})
+-- require("mason-lspconfig").setup()
 
+-- TODO: move to autocommands.lua
 -- set file type for docker docker_compose_language_service
 local function set_filetype(pattern, filetype)
   vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
@@ -73,154 +85,101 @@ end
 
 set_filetype({ "compose.*", "docker-compose.*" }, "yaml.docker-compose")
 
--- Enable the following language servers
-local servers = {
-  clangd = {
-    cmd = {
-      "clangd",
-      "--all-scopes-completion",
-      "--background-index",
-      "--clang-tidy",
-      "--compile_args_from=filesystem", -- lsp-> does not come from compie_commands.json
-      "--completion-parse=always",
-      "--completion-style=bundled",
-      "--cross-file-rename",
-      "--debug-origin",
-      "--enable-config", -- clangd 11+ supports reading from .clangd configuration file
-      "--fallback-style=Qt",
-      "--folding-ranges",
-      "--function-arg-placeholders",
-      "--header-insertion=iwyu",
-      "--pch-storage=memory", -- could also be disk
-      "--suggest-missing-includes",
-      "-j=4", -- number of workers
-      -- "--resource-dir="
-      "--log=error",
-      --[[ "--query-driver=/usr/bin/g++", ]]
-    },
-    filetypes = { "c", "cpp", "objc", "objcpp", "h" },
-    single_file_support = true,
-    init_options = {
-      compilationDatabasePath = vim.fn.getcwd() .. "/build",
-    },
-    capabilities = {
-      offsetEncoding = { "utf-16" },
-    },
-    -- commands = {},
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+-- vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+--
+vim.lsp.config("*", {
+  -- capabilities = capabilities,
+  on_attach = on_attach,
+  root_markers = { ".git" },
+})
+
+vim.lsp.config("clangd", {
+  cmd = {
+    "clangd",
+    "--all-scopes-completion",
+    "--background-index",
+    "--clang-tidy",
+    "--compile_args_from=filesystem", -- lsp-> does not come from compie_commands.json
+    "--completion-parse=always",
+    "--completion-style=bundled",
+    "--cross-file-rename",
+    "--debug-origin",
+    "--enable-config", -- clangd 11+ supports reading from .clangd configuration file
+    "--fallback-style=Qt",
+    "--folding-ranges",
+    "--function-arg-placeholders",
+    "--header-insertion=iwyu",
+    "--pch-storage=memory", -- could also be disk
+    "--suggest-missing-includes",
+    "-j=4", -- number of workers
+    "--log=error",
   },
-  bashls = {},
-  docker_compose_language_service = {},
-  dockerls = {},
-  gopls = {},
-  yamlls = {
-    yaml = {
-      schemas = {
-        ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*",
-        -- ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
-        -- ["https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible-lint-config.json"] = "ansible/*",
-        -- ["https://json.schemastore.org/ansible-stable-2.9"] = "ansible/*",
-        ["https://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
-        -- ["https://json.schemastore.org/ansible-playbook"] = "*play*.{yml,yaml}",
-        ["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}",
-        kubernetes = "*.yaml",
-      },
-    },
-    filetypes = { "yaml", "yaml.gitlab" },
+  filetypes = { "c", "cpp", "objc", "objcpp", "h" },
+  single_file_support = true,
+  init_options = {
+    compilationDatabasePath = vim.fn.getcwd() .. "/build",
   },
-  marksman = {},
-  basedpyright = {
+  capabilities = {
+    offsetEncoding = { "utf-16" },
+  },
+})
+
+vim.lsp.config("basedpyright", {
+  filetypes = { "python" },
+  settings = {
     basedpyright = {
+      disableOrganizeImports = true,
       analysis = {
+        -- Use ruff exclusively for lint
+        -- ignore = { "*" },
         diagnosticSeverityOverrides = {
           reportUnknownMemberType = false,
         },
+        typeCheckingMode = "standard",
       },
-      -- disableLanguageServices = true,
     },
   },
-  rust_analyzer = {},
-  sqlls = {},
-  eslint = {},
-  ts_ls = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-  lua_ls = {
+})
+
+-- TODO: move to lazydev?
+-- require("neodev").setup()
+vim.lsp.config("lua_ls", {
+  filetypes = { "lua" },
+  settings = {
     Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
     },
   },
-  ansiblels = {
-    redhat = {
-      telemetry = {
-        enabled = false,
-      },
-    },
-    ansible = {
-      validation = {
-        lint = {
-          enabled = true,
-        },
-      },
-    },
-    filetypes = { "yaml.ansible" },
-  },
-}
-
--- Setup neovim lua configuration
-require("neodev").setup()
-
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
--- vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
--- Ensure the servers above are installed
-local mason_lspconfig = require("mason-lspconfig")
-mason_lspconfig.setup({
-  ensure_installed = vim.tbl_keys(servers),
 })
 
-mason_lspconfig.setup_handlers({
-  function(server_name)
-    if server_name == "rust_analyzer" then
-      return
-    end
-    require("lspconfig")[server_name].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
-    })
-  end,
-})
-
--- rust_analyzer
-require("rustaceanvim")
-vim.g.rustaceanvim = {
-  server = {
-    on_attach = function(_, bufnr)
-      on_attach(_, bufnr)
-      rust_on_attach(_, bufnr)
-    end,
-    default_settings = {
-      ["rust-analyzer"] = {
-        cargo = {
-          features = "all",
-        },
+vim.lsp.config("rust-analyzer", {
+  filetypes = { "rust" },
+  on_attach = on_attach,
+  capabilities = vim.lsp.protocol.make_client_capabilities(),
+  default_settings = {
+    ["rust-analyzer"] = {
+      cargo = {
+        features = "all",
+        -- extraArgs = { "--nocapture" },
+      },
+      runnables = {
+        extraTestBinaryArgs = { "--nocapture" },
       },
     },
   },
-}
+})
 
 require("crates").setup({
   lsp = {
+    on_attach = on_attach,
     enabled = true,
-    on_attach = function(_, bufnr)
-      on_attach(_, bufnr)
-      local crates = require("crates")
-      vim.keymap.set("n", "<leader>cc", crates.show_crate_popup, { desc = "Show crate info" })
-      vim.keymap.set("n", "<leader>cf", crates.show_features_popup, { desc = "Show crate features" })
-    end,
     actions = true,
     completion = true,
     hover = true,
@@ -237,75 +196,104 @@ require("crates").setup({
   },
 })
 
--- Given the linter and formatter list, extract a list of all tools that need to be installed
-local function mason_autoinstall(linters, formatters, debuggers, ignore)
-  local linter_list = vim.iter(vim.tbl_values(linters)):flatten():totable()
-  local formatter_list = vim.iter(vim.tbl_values(formatters)):flatten():totable()
-  local tools = vim.list_extend(linter_list, formatter_list)
-  vim.list_extend(tools, debuggers)
-
-  -- only unique tools
-  table.sort(tools)
-  tools = vim.fn.uniq(tools)
-
-  -- remove exceptions not to install
-  tools = vim.tbl_filter(function(tool)
-    return not vim.tbl_contains(ignore, tool)
-  end, tools)
-  return tools
-end
-
-local formatters = {
-  go = { "gofmt" },
-  html = { "prettier" },
-  javascript = { "prettier" },
-  lua = { "stylua" },
-  python = { "isort", "black" },
-  sh = { "shfmt", "shellcheck" },
-  yaml = { "prettier" },
-  -- sql = { "sqlfmt" },
-  -- typescript = { "biome" },
-  -- json = { "biome" },
-  -- jsonc = { "biome" },
-  markdown = {
-    "mdformat",
-    -- "markdown-toc",
-    -- "markdownlint",
+vim.lsp.config("ruff", {
+  filetypes = { "python" },
+  init_options = {
+    settings = {
+      configuration = vim.fn.expand("$HOME") .. ".config/ruff/ruff.toml",
+      lint = {
+        ignore = { "F722" },
+      },
+    },
   },
-  -- bib = { "trim_whitespace", "bibtex-tidy" },
-  -- ["_"] = { "trim_whitespace", "trim_newlines", "squeeze_blanks" },
-  -- ["*"] = { "codespell" },
+})
+
+vim.lsp.config("ansiblels", {
+  settings = {
+    redhat = {
+      telemetry = {
+        enabled = false,
+      },
+    },
+    ansible = {
+      validation = {
+        lint = {
+          enabled = true,
+        },
+      },
+    },
+  },
+  filetypes = { "yaml.ansible" },
+})
+
+-- ["yamlls"] = function()
+--   require("lspconfig").yamlls.setup({
+--     settings = {
+--       yaml = {
+--         schemas = {
+--           ["https://github.com/mason-org/registry-schema/releases/latest/download/package.schema.json"] = "*mason*.{yml,yaml}",
+--           ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*",
+--           -- ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+--           -- ["https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible-lint-config.json"] = "ansible/*",
+--           -- ["https://json.schemastore.org/ansible-stable-2.9"] = "ansible/*",
+--           ["https://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+--           -- ["https://json.schemastore.org/ansible-playbook"] = "*play*.{yml,yaml}",
+--           ["https://json.schemastore.org/gitlab-ci"] = "*gitlab-ci*.{yml,yaml}",
+--           -- kubernetes = "*.yaml",
+--         },
+--         customTags = {
+--           "!vault scalar",
+--         },
+--       },
+--     },
+--     filetypes = { "yaml", "yaml.gitlab" },
+--   })
+-- end,
+
+-- -- vim.lsp.config('lua_ls')
+-- vim.api.nvim_create_autocmd("LspAttach", {
+--   -- group = vim.api.nvim_create_augroup("my.lsp", {}),
+--   callback = function(args)
+--     local client = vim.lsp.get_client_by_id(args.data.client_id)
+--     if not client then
+--       return
+--     end
+--
+--     if cl
+--   end,
+-- })
+
+local servers = {
+  "clangd",
+  "bashls",
+  "docker_compose_language_service",
+  "dockerls",
+  "gopls",
+  "marksman",
+  "ruff",
+  "basedpyright",
+  -- "rust_analyzer",
+  -- "sqlls",
+  "eslint",
+  "ts_ls",
+  "lua_ls",
+  "ansiblels",
+  "yamlls",
+  -- ""
+  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  -- TODO: not yet available in mason
+  -- glasgow = {},
 }
 
-local linters = { ansible = { "ansible-lint" } }
-local debuggers = {}
-local dont_install = {}
--- not real formatters, but pseudo-formatters from conform.nvim
--- {
--- "trim_whitespace",
--- "trim_newlines",
--- "squeeze_blanks",
--- "injected",
--- }
-
-require("mason-null-ls").setup({
-  ensure_installed = mason_autoinstall(linters, formatters, debuggers, dont_install),
-  automatic_installation = false,
+require("mason-lspconfig").setup({
+  automatic_installation = true,
+  ensure_installed = servers,
 })
 
-vim.g.format_is_enabled = true
-vim.api.nvim_create_user_command("FormatToggle", function()
-  vim.g.format_is_enabled = not vim.g.format_is_enabled
-  print("Setting autoformatting to: " .. tostring(vim.g.format_is_enabled))
-end, {
-  desc = "Toggle autoformatting on save",
-})
+vim.lsp.enable(servers)
+-- vim.lsp.enable("crates-nvim")
 
-require("conform").setup({
-  formatters_by_ft = formatters,
-  format_on_save = function(_)
-    if vim.g.format_is_enabled then
-      return { timeout_ms = 500, lsp_fallback = true }
-    end
-  end,
-})
+-- TODO: migrate to vim.lsp.config
+require("lspconfig").glasgow.setup({})
+-- postgrestools in mason
+require("lspconfig").postgres_lsp.setup({})
