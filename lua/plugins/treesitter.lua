@@ -9,7 +9,7 @@ return {
     },
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
+      require("nvim-treesitter").setup({
         sync_install = false,
         modules = {},
         ignore_install = {},

@@ -96,19 +96,20 @@ vim.lsp.config("*", {
   root_markers = { ".git" },
 })
 
+-- TODO fhdkjfh
 vim.lsp.config("clangd", {
   cmd = {
     "clangd",
     "--all-scopes-completion",
     "--background-index",
     "--clang-tidy",
-    "--compile_args_from=filesystem", -- lsp-> does not come from compie_commands.json
+    "--compile_args_from=filesystem", -- lsp-> does not come from compile_commands.json
     "--completion-parse=always",
     "--completion-style=bundled",
     "--cross-file-rename",
     "--debug-origin",
     "--enable-config", -- clangd 11+ supports reading from .clangd configuration file
-    "--fallback-style=Qt",
+    "--fallback-style=LLVM",
     "--folding-ranges",
     "--function-arg-placeholders",
     "--header-insertion=iwyu",
@@ -117,10 +118,10 @@ vim.lsp.config("clangd", {
     "-j=4", -- number of workers
     "--log=error",
   },
-  filetypes = { "c", "cpp", "objc", "objcpp", "h" },
+  filetypes = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
   single_file_support = true,
   init_options = {
-    compilationDatabasePath = vim.fn.getcwd() .. "/build",
+    compilationDatabasePath = vim.fn.getcwd(),
   },
   capabilities = {
     offsetEncoding = { "utf-16" },
@@ -294,6 +295,6 @@ vim.lsp.enable(servers)
 -- vim.lsp.enable("crates-nvim")
 
 -- TODO: migrate to vim.lsp.config
-require("lspconfig").glasgow.setup({})
+-- require("lspconfig").glasgow.setup({})
 -- postgrestools in mason
-require("lspconfig").postgres_lsp.setup({})
+-- require("lspconfig").postgres_lsp.setup({})ini

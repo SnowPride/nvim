@@ -16,8 +16,29 @@ return {
       ensure_installed = {
         "delve",
         "python",
+        "cppdbg",
       },
     })
+
+    dap.adapters.cppdbg = {
+      id = "cppdbg",
+      type = "executable",
+      -- WARNING: Only for linux
+      command = vim.env.HOME .. "/.local/share/nvim/mason/bin/OpenDebugAD7",
+    }
+
+    dap.configurations.cpp = {
+      {
+        name = "Test Launch",
+        type = "cppdbg",
+        request = "launch",
+        program = function()
+          return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+        end,
+        cwd = "${workspaceFolder}",
+        stopAtEntry = true,
+      },
+    }
 
     -- Basic debugging keymaps, feel free to change to your liking!
     vim.keymap.set("n", "<leader>dp", dap.continue, { desc = "Start/Continue" })
@@ -47,7 +68,6 @@ return {
         },
       },
     })
-    -- dapui.setup()
 
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     vim.keymap.set("n", "<leader>dl", dapui.toggle, { desc = "See last session result." })
